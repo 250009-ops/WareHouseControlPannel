@@ -34,21 +34,8 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-stretch justify-center bg-[#f1f5f9] md:bg-[#e2e8f0] md:p-[24px]">
-      <div className="flex w-full max-w-[1440px] flex-col md:flex-row md:overflow-hidden md:rounded-[24px] md:bg-white md:shadow-[0px_10px_24px_0px_rgba(0,0,0,0.1)] xl:h-[900px] min-[1920px]:max-w-[1680px]">
-        <div className="flex flex-col items-center px-[24px] pt-[48px] pb-[8px] md:hidden">
-          <div className="flex size-[56px] shrink-0 items-center justify-center overflow-clip rounded-[12px] bg-[#2563eb]">
-            <Icon name="warehouse" size={28} alt="" />
-          </div>
-          <p className="mt-[12px] font-[family-name:var(--font-epilogue)] text-[24px] font-bold text-[#1e293b]">
-            Ombor Nazorati
-          </p>
-          <p className="mt-[8px] text-center text-[13px] text-[#64748b]">
-            Aqlli Omborxona Boshqaruvi
-          </p>
-        </div>
-
-        <div className="hidden min-w-px flex-1 flex-col items-start justify-between self-stretch bg-[#0f172a] p-[48px] md:flex xl:p-[64px] min-[1920px]:flex-[0.45]">
+    <div className="flex min-h-dvh w-full flex-col md:h-dvh md:flex-row md:overflow-hidden">
+        <div className="flex min-w-px flex-col items-start justify-between gap-[32px] self-stretch bg-[#0f172a] p-[24px] md:flex-1 md:p-[48px] xl:p-[64px] min-[1920px]:flex-[0.45]">
           <div className="flex items-center gap-[12px]">
             <div className="flex size-[48px] shrink-0 items-center justify-center overflow-clip rounded-[12px] bg-[#2563eb]">
               <Icon name="warehouse" size={28} alt="" />
@@ -58,7 +45,7 @@ export default function SignInPage() {
             </p>
           </div>
           <div className="flex w-full flex-col items-start gap-[32px]">
-            <div className="relative h-[220px] w-full overflow-hidden rounded-[16px] lg:h-[320px]">
+            <div className="relative h-[180px] w-full overflow-hidden rounded-[16px] md:h-[220px] lg:h-[320px]">
               <img
                 src="/assets/warehouse-hero.png"
                 alt=""
@@ -81,10 +68,10 @@ export default function SignInPage() {
           </p>
         </div>
 
-        <div className="flex min-w-px flex-1 flex-col items-center justify-center px-[24px] py-[24px] md:p-[48px] xl:p-[80px] min-[1920px]:flex-[0.55]">
+        <div className="flex min-w-px flex-1 flex-col items-center justify-center bg-white px-[24px] py-[32px] md:p-[48px] xl:p-[80px] min-[1920px]:flex-[0.55]">
           <form
             onSubmit={onSubmit}
-            className="flex w-full max-w-[420px] flex-col items-start gap-[24px] rounded-[16px] bg-white p-[20px] shadow-[0px_10px_24px_0px_rgba(0,0,0,0.08)] md:gap-[32px] md:rounded-none md:p-0 md:shadow-none"
+            className="flex w-full max-w-[420px] flex-col items-start gap-[24px] md:gap-[32px]"
           >
             <div className="flex w-full flex-col items-start gap-[8px]">
               <h1 className="w-full font-[family-name:var(--font-epilogue)] text-[24px] font-bold text-[#1e293b] md:text-[32px]">
@@ -165,10 +152,6 @@ export default function SignInPage() {
             </button>
           </form>
         </div>
-        <p className="px-[24px] pb-[32px] text-center text-[12px] text-[#94a3b8] md:hidden">
-          © 2026 Ombor Nazorati. Barcha huquqlar himoyalangan.
-        </p>
-      </div>
     </div>
   );
 }
