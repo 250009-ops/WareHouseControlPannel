@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ombor Nazorati
 
-## Getting Started
+Full-stack warehouse control panel: Next.js API + server data layer, ready for Supabase and Vercel.
 
-First, run the development server:
+## Login
+
+- Email: `makatbcounselor@gmail.com`
+- Password: `13-makatbcounselor`
+
+These are set in `.env.local` as `PANEL_EMAIL` / `PANEL_PASSWORD`.
+
+## Architecture
+
+- Frontend: Next.js App Router screens
+- Backend: `/api/auth/*` and `/api/data` (httpOnly session cookie)
+- Data: server file (`data/store.json`) until Supabase keys are present, then Postgres via the service role key
+
+## Local run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Health check: [http://localhost:3000/api/health](http://localhost:3000/api/health).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` (already created locally):
 
-## Learn More
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_APP_URL` | App origin |
+| `NEXT_PUBLIC_PANEL_EMAIL` | Login form default email |
+| `PANEL_EMAIL` | Server login email |
+| `PANEL_PASSWORD` | Server login password |
+| `AUTH_SECRET` | Signs the session cookie |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key for table writes |
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a project at [supabase.com](https://supabase.com).
+2. Project Settings → API: paste URL, anon key, and service role key into `.env.local`.
+3. Run `supabase/schema.sql` in the SQL editor.
+4. Authentication → Users → Add user with the panel email/password and confirm the email.
+5. Restart `npm run dev`. `/api/health` should show `"backend": "supabase"`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Vercel
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set the same variables in the Vercel project (including `SUPABASE_SERVICE_ROLE_KEY`). Use your production URL for `NEXT_PUBLIC_APP_URL`.

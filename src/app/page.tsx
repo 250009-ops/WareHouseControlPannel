@@ -1,69 +1,174 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Icon } from "@/components/Icon";
+import { useAuth } from "@/lib/auth";
+import { PANEL_EMAIL } from "@/lib/seed";
+
+export default function SignInPage() {
+  const { user, ready, login } = useAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState(PANEL_EMAIL);
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (ready && user) router.replace("/dashboard");
+  }, [ready, user, router]);
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    const message = await login(email, password, remember);
+    setLoading(false);
+    if (message) {
+      setError(message);
+      return;
+    }
+    router.replace("/dashboard");
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex min-h-screen items-stretch justify-center bg-[#f1f5f9] md:bg-[#e2e8f0] md:p-[24px]">
+      <div className="flex w-full max-w-[1440px] flex-col md:flex-row md:overflow-hidden md:rounded-[24px] md:bg-white md:shadow-[0px_10px_24px_0px_rgba(0,0,0,0.1)] xl:h-[900px] min-[1920px]:max-w-[1680px]">
+        <div className="flex flex-col items-center px-[24px] pt-[48px] pb-[8px] md:hidden">
+          <div className="flex size-[56px] shrink-0 items-center justify-center overflow-clip rounded-[12px] bg-[#2563eb]">
+            <Icon name="warehouse" size={28} alt="" />
+          </div>
+          <p className="mt-[12px] font-[family-name:var(--font-epilogue)] text-[24px] font-bold text-[#1e293b]">
+            Ombor Nazorati
+          </p>
+          <p className="mt-[8px] text-center text-[13px] text-[#64748b]">
+            Aqlli Omborxona Boshqaruvi
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="hidden min-w-px flex-1 flex-col items-start justify-between self-stretch bg-[#0f172a] p-[48px] md:flex xl:p-[64px] min-[1920px]:flex-[0.45]">
+          <div className="flex items-center gap-[12px]">
+            <div className="flex size-[48px] shrink-0 items-center justify-center overflow-clip rounded-[12px] bg-[#2563eb]">
+              <Icon name="warehouse" size={28} alt="" />
+            </div>
+            <p className="font-[family-name:var(--font-epilogue)] text-[24px] font-bold whitespace-nowrap text-[#f8fafc]">
+              Ombor Nazorati
+            </p>
+          </div>
+          <div className="flex w-full flex-col items-start gap-[32px]">
+            <div className="relative h-[220px] w-full overflow-hidden rounded-[16px] lg:h-[320px]">
+              <img
+                src="/assets/warehouse-hero.png"
+                alt=""
+                className="absolute inset-0 size-full rounded-[16px] object-cover"
+              />
+              <div className="absolute inset-0 bg-[#0f172a] opacity-40" />
+            </div>
+            <div className="flex w-full flex-col items-start gap-[12px]">
+              <p className="w-full font-[family-name:var(--font-epilogue)] text-[24px] font-bold text-[#f8fafc] xl:text-[28px]">
+                Aqlli Omborxona Boshqaruvi
+              </p>
+              <p className="w-full text-[15px] leading-[1.5] text-[#94a3b8] xl:text-[16px]">
+                Barcha tovarlar harakati, kargo hisob-kitoblari va savdo
+                ko&apos;rsatkichlari bitta tizimda mukammal nazorat ostida.
+              </p>
+            </div>
+          </div>
+          <p className="text-[14px] text-[#94a3b8]">
+            © 2026 Ombor Nazorati. Barcha huquqlar himoyalangan.
+          </p>
         </div>
-      </main>
+
+        <div className="flex min-w-px flex-1 flex-col items-center justify-center px-[24px] py-[24px] md:p-[48px] xl:p-[80px] min-[1920px]:flex-[0.55]">
+          <form
+            onSubmit={onSubmit}
+            className="flex w-full max-w-[420px] flex-col items-start gap-[24px] rounded-[16px] bg-white p-[20px] shadow-[0px_10px_24px_0px_rgba(0,0,0,0.08)] md:gap-[32px] md:rounded-none md:p-0 md:shadow-none"
+          >
+            <div className="flex w-full flex-col items-start gap-[8px]">
+              <h1 className="w-full font-[family-name:var(--font-epilogue)] text-[24px] font-bold text-[#1e293b] md:text-[32px]">
+                Tizimga kirish
+              </h1>
+              <p className="w-full text-[14px] text-[#64748b] md:text-[16px]">
+                Elektron pochta va parolingizni kiriting
+              </p>
+            </div>
+            <div className="flex w-full flex-col items-start gap-[20px]">
+              <label className="flex w-full flex-col items-start gap-[8px]">
+                <span className="w-full text-[14px] font-semibold text-[#1e293b]">
+                  Elektron pochta
+                </span>
+                <div className="flex w-full items-center gap-[8px] rounded-[8px] border border-[#e2e8f0] bg-[#f1f5f9] px-[16px] py-[12px]">
+                  <span className="flex size-[20px] shrink-0 items-center justify-center overflow-clip">
+                    <Icon name="mail" size={20} alt="" />
+                  </span>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="min-w-px flex-1 bg-transparent text-[15px] text-[#1e293b] outline-none"
+                  />
+                </div>
+              </label>
+              <label className="flex w-full flex-col items-start gap-[8px]">
+                <span className="w-full text-[14px] font-semibold text-[#1e293b]">Parol</span>
+                <div className="flex w-full items-center gap-[8px] rounded-[8px] border border-[#e2e8f0] bg-[#f1f5f9] px-[16px] py-[12px]">
+                  <span className="flex size-[20px] shrink-0 items-center justify-center overflow-clip">
+                    <Icon name="lock" size={20} alt="" />
+                  </span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="min-w-px flex-1 bg-transparent text-[15px] text-[#1e293b] outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="flex size-[20px] shrink-0 items-center justify-center overflow-clip"
+                  >
+                    <Icon name="eye-off" size={20} alt="" />
+                  </button>
+                </div>
+              </label>
+              <div className="flex w-full flex-wrap items-center justify-between gap-[8px]">
+                <button
+                  type="button"
+                  onClick={() => setRemember((v) => !v)}
+                  className="flex items-center gap-[8px]"
+                >
+                  <span
+                    className={`flex size-[20px] items-center justify-center overflow-clip rounded-[4px] ${
+                      remember ? "bg-[#2563eb]" : "border border-[#cbd5e1] bg-white"
+                    }`}
+                  >
+                    {remember ? <Icon name="check" size={14} alt="" /> : null}
+                  </span>
+                  <span className="text-[14px] text-[#64748b]">Meni eslab qol</span>
+                </button>
+                <button
+                  type="button"
+                  className="text-[14px] font-semibold text-[#2563eb]"
+                >
+                  Parolni unutdingizmi?
+                </button>
+              </div>
+            </div>
+            {error ? <p className="text-[14px] text-[#b91c1c]">{error}</p> : null}
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex w-full items-center justify-center rounded-[8px] bg-[#2563eb] px-[24px] py-[14px] text-[16px] font-semibold text-white disabled:opacity-70"
+            >
+              {loading ? "Kirilmoqda..." : "Kirish"}
+            </button>
+          </form>
+        </div>
+        <p className="px-[24px] pb-[32px] text-center text-[12px] text-[#94a3b8] md:hidden">
+          © 2026 Ombor Nazorati. Barcha huquqlar himoyalangan.
+        </p>
+      </div>
     </div>
   );
 }
